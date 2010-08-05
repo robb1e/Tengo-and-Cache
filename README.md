@@ -35,5 +35,5 @@ Using Fallback will probably break this app at the moment, and it certainly won'
 
 The application doesn't raise any events as described by section 5.6.1.1 from here: http://www.w3.org/TR/html5/offline.html - I'm not certain that all are relevant but some can certainly be fired using the stringByEvaluatingJavaScriptFromString method on the UIWebView.
 
- 
+If your application tries to reach out to the web, the URI must include the domain, or it will only look in the cache.  It would be possible for the application to intercept the HTTP request and prepend the domain from the plist file if not in the cache.
 
