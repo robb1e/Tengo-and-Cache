@@ -1,13 +1,27 @@
 #import "CachemanifestAppDelegate.h"
 #import "CachemanifestViewController.h"
+#import "CacheWebCache.h"
 
 @implementation CachemanifestAppDelegate
 
 @synthesize window;
 @synthesize viewController;
 
+-(NSString *) webCacheDirectory
+{	
+	NSString *webCacheDirectory = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/cache"];
+	NSLog(@"Creating directory %@", webCacheDirectory);
+	[[NSFileManager defaultManager] createDirectoryAtPath:webCacheDirectory attributes:nil];		
+	return webCacheDirectory;
+}
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { 
+	
+	// caching setup
+	CacheWebCache *urlCache = [[[CacheWebCache alloc] initWithMemoryCapacity:(1<<20) diskCapacity:(1<<24) diskPath:[self webCacheDirectory]] autorelease];
+	[NSURLCache setSharedURLCache:urlCache];
+	
+	
     [self updateCache];
     // Override point for customization after app launch    
     [window addSubview:viewController.view];
@@ -91,6 +105,7 @@
 	}
 	
 }
+
 
 - (void)dealloc {
     [viewController release];

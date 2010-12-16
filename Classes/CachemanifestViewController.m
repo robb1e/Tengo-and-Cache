@@ -31,7 +31,6 @@
 	// e.g. self.myOutlet = nil;
 }
 
-
 - (void)dealloc {
 	[activityView release];
 	[webView release];
