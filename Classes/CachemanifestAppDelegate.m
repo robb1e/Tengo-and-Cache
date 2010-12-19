@@ -79,14 +79,21 @@
 		if (clean)
 			[cleanTokens addObject:[token stringByReplacingOccurrencesOfString:@"\r" withString:@""]];
 	}
+
+	NSString *tokenPath = [NSHomeDirectory() stringByAppendingFormat:[NSString stringWithFormat:@"/Documents/%@", @"index.html"]];
+	NSString *tokenUri = [NSString stringWithFormat:@"%@", domain];
+	NSURL *tokenUrl = [NSURL URLWithString:tokenUri];
+	NSLog(@"Downloading %@ to %@", tokenUri, tokenPath);
+	NSData *tokenData = [NSData dataWithContentsOfURL:tokenUrl];
+	[tokenData writeToFile:tokenPath atomically:YES];
 	
 	for (NSString *token in cleanTokens){
 		NSLog(@"cleaned token:%@", token);
-		NSString *tokenPath = [NSHomeDirectory() stringByAppendingFormat:[NSString stringWithFormat:@"/Documents/%@", token]];
-		NSString *tokenUri = [NSString stringWithFormat:@"%@/%@", domain, token];
-		NSURL *tokenUrl = [NSURL URLWithString:tokenUri];
+		tokenPath = [NSHomeDirectory() stringByAppendingFormat:[NSString stringWithFormat:@"/Documents/%@", token]];
+		tokenUri = [NSString stringWithFormat:@"%@/%@", @"http://localhost:3000", token];
+		tokenUrl = [NSURL URLWithString:tokenUri];
 		NSLog(@"Downloading %@ to %@", tokenUri, tokenPath);
-		NSData *tokenData = [NSData dataWithContentsOfURL:tokenUrl];
+		tokenData = [NSData dataWithContentsOfURL:tokenUrl];
 		
 		NSArray *directories = [token componentsSeparatedByString:@"/"];
 		NSString *newDirectory = @"";
